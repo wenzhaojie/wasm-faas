@@ -23,5 +23,8 @@ go.work
 # target
 target/
 
-# C
+# Cargo
 !**/Cargo.toml
+
+#
+.idea
