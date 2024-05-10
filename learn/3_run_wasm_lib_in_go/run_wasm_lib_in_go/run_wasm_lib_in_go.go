@@ -27,6 +27,7 @@ func main() {
 	// 使用配置创建虚拟机
 	vm := wasmedge.NewVMWithConfig(conf)
 
+	// 加载 Wasm 文件并执行
 	res, err := vm.RunWasmFile(os.Args[1], "fibonacci", uint64(21))
 	if err == nil {
 		fmt.Println("获取第 21 项斐波那契数:", res[0].(int64))
