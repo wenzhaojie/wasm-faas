@@ -15,11 +15,7 @@ go build wasm_bindwidth.go
 
 # 结果
 ```bash
-wzj@ZhaojiedeMacBook-Pro rust_bindgen % cp target/wasm32-wasi/release/rust_bindgen.wasm  ../
-cd ..
-go build wasm_bindwidth.go
-./wasm_bindwidth rust_bindgen.wasm
-wasm内部打点计时: [%!f(string=0)] s
-带宽: 96.251719 MB/s
+wzj@ZhaojiedeMacBook-Pro wasm_bindwidth % ./wasm_bindwidth rust_bindgen.wasm 
+带宽: 3332.408035 MB/s
 ```
 
