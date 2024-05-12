@@ -6,22 +6,6 @@ extern "C" {
 }
 
 #[no_mangle]
-pub extern fn allocate(size: usize) -> *mut c_void {
-    let mut buffer = Vec::with_capacity(size);
-    let pointer = buffer.as_mut_ptr();
-    mem::forget(buffer);
-
-    pointer as *mut c_void
-}
-
-#[no_mangle]
-pub extern fn deallocate(pointer: *mut c_void, capacity: usize) {
-    unsafe {
-        let _ = Vec::from_raw_parts(pointer, 0, capacity);
-    }
-}
-
-#[no_mangle]
 // 定义不进行名称修饰的 run 函数，可在其他语言中直接调用
 pub unsafe extern "C" fn run() -> i32 {
     // 准备存放一个key，key="abc", value="wenzhaojie"
