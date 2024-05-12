@@ -3,6 +3,7 @@ use wasmedge_bindgen::*;
 use wasmedge_bindgen_macro::*;
 use std::hint::black_box;
 
+
 #[wasmedge_bindgen] // 使用 wasmedge_bindgen 宏
 pub fn bandwidth(data: String) -> String {
     let start_time = std::time::Instant::now(); // 记录开始时间点

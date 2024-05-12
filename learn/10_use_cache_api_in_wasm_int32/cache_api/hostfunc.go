@@ -8,16 +8,16 @@ import (
 
 // 定义主机结构体
 type Host struct {
-	cache map[string]int32
+	cache map[int32]int32
 }
 
 // 定义从缓存中获取数据的主机函数
 func (h *Host) hostGetDataFromCache(data interface{}, callframe *wasmedge.CallingFrame, params []interface{}) ([]interface{}, wasmedge.Result) {
-	key := params[0].(string)
+	key := params[0].(int32)
 	value, exists := h.cache[key]
 	if !exists {
 		fmt.Printf("Key %s not found in cache\n", key)
-		return []interface{}{int32(0)}, wasmedge.Result_Success
+		return []interface{}{""}, wasmedge.Result_Success
 	}
 	fmt.Printf("Retrieved value %d for key %s from cache\n", value, key)
 	return []interface{}{value}, wasmedge.Result_Success
@@ -25,7 +25,7 @@ func (h *Host) hostGetDataFromCache(data interface{}, callframe *wasmedge.Callin
 
 // 定义将数据存入缓存的主机函数
 func (h *Host) hostPutDataToCache(data interface{}, callframe *wasmedge.CallingFrame, params []interface{}) ([]interface{}, wasmedge.Result) {
-	key := params[0].(string)
+	key := params[0].(int32)
 	value := params[1].(int32)
 	h.cache[key] = value
 	fmt.Printf("Stored value %d for key %s into cache\n", value, key)
@@ -35,7 +35,7 @@ func (h *Host) hostPutDataToCache(data interface{}, callframe *wasmedge.CallingF
 func main() {
 	// 初始化主机结构体
 	h := Host{
-		cache: make(map[string]int32),
+		cache: make(map[int32]int32),
 	}
 
 	// 创建配置
@@ -76,6 +76,13 @@ func main() {
 	// 执行 run 函数
 	r, _ := vm.Execute("run")
 	fmt.Printf("Run function returned: %d\n", r[0])
+
+	// 查看 host里面的内容
+	// 打印缓存
+	fmt.Println("Go cache contents:")
+	for key, value := range h.cache {
+		fmt.Printf("Key: %d, Value: %d\n", key, value)
+	}
 
 	// 释放资源
 	obj.Release()

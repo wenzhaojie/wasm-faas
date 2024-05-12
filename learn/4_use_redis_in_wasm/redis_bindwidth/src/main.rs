@@ -2,6 +2,7 @@ use redis::Commands;
 use anyhow::Result;
 use std::time::{Instant};
 
+
 const DATA_SIZE_MB: f64 = 300.0; // Data size in MB
 
 fn get_url() -> String {
@@ -39,3 +40,4 @@ async fn main() -> Result<()> {
 
     Ok(())
 }
+
