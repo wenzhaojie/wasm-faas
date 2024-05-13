@@ -41,7 +41,7 @@ func main() {
 
 	// 准备输入数据
 	// 准备输入数据
-	const dataSizeMB = 10 // 希望测试的字符串大小，以 MB 为单位
+	const dataSizeMB = 1000 // 希望测试的字符串大小，以 MB 为单位
 
 	// 计算数据大小，确保不小于 1 字节
 	dataSize := int(math.Round(dataSizeMB * 1024 * 1024))

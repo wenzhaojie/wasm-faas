@@ -9,8 +9,7 @@ cargo build --target wasm32-wasi --release
 cp target/wasm32-wasi/release/rust_bindgen.wasm  ../
 cd ..
 go build wasm_bindwidth.go
-./wasm_bindwidth rust_bindgen.wasm 
-
+./wasm_bindwidth rust_bindgen.wasm
 ```
 
 # 结果
