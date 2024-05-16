@@ -107,7 +107,7 @@ func main() {
 	// 提前存放 key="hust" , value="123123"
 	globalCache.Set("hust", "123123", cache.NoExpiration)
 	// 创建一个指定大小的字符串
-	dataSizeMB := 1000 // MB
+	dataSizeMB := 10 // MB
 	dataSizeBytes := dataSizeMB * 1024 * 1024
 	data := strings.Repeat("a", dataSizeBytes)
 

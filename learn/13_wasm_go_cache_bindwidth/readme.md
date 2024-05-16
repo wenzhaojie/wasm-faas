@@ -14,12 +14,9 @@ go build use_pointer_host_func.go
 ```
 # 结果
 ```shell
-wzj@ZhaojiedeMacBook-Pro use_pointer_host_func % ./use_pointer_host_func rust_use_pointer.wasm 
+wzj@ZhaojiedeMacBook-Pro use_pointer_host_func % ./use_pointer_host_func rust_use_pointer.wasm
 Go: Args: [./use_pointer_host_func rust_use_pointer.wasm]
-Set value wenzhaojie for key abc in cache
-Type of value: string
-Retrieved value 123123 for key hust from cache
-writeMem: tmpDataStr.DataStr is 123123
-The result from wasm module is 0 
-wzj@ZhaojiedeMacBook-Pro use_pointer_host_func % 
+The 用时 from wasm module is 115 
+传输带宽为: 695.65 Mbps
+传输带宽为: 86.96 MB/s
 ```
