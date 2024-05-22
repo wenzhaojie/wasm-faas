@@ -1,6 +1,8 @@
 use std::collections::HashMap;
 
 fn main() {
+    println!("Starting main function...");
+
     let text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. \
                 Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \
                 Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi \
@@ -11,22 +13,20 @@ fn main() {
 
     let num_threads = 4;
     let chunks = split_text_into_chunks(text, num_threads);
+    println!("Text split into chunks: {:?}", chunks);
 
-    let results: Vec<String> = chunks
-        .into_iter()
-        .map(|chunk| count_words(chunk))
-        .collect();
+    let merge_results = merge_results(chunks);
+    println!("Results merged: {}", merge_results);
 
-    let final_result = merge_results(results);
+    // Deserialize the final result string into HashMap<String, i32>
+    let final_result_map: HashMap<String, i32> = serde_json::from_str(&merge_results).unwrap();
 
-    // Deserialize the final result string into HashMap<String, usize>
-    let final_result_map: HashMap<String, usize> = serde_json::from_str(&final_result).unwrap();
-
-    println!("{:?}", final_result_map);
+    println!("Final result map: {:?}", final_result_map);
+    println!("Exiting main function...");
 }
 
-fn split_text_into_chunks(text: &str, num_chunks: usize) -> Vec<String> {
-    let mut chunks = Vec::with_capacity(num_chunks);
+fn split_text_into_chunks(text: &str, num_chunks: usize) -> String {
+    let mut chunks = String::new();
     let words: Vec<&str> = text.split_whitespace().collect();
     let chunk_size = words.len() / num_chunks;
 
@@ -39,27 +39,32 @@ fn split_text_into_chunks(text: &str, num_chunks: usize) -> Vec<String> {
         };
 
         let chunk = words[start..end].join(" ");
-        chunks.push(chunk);
+        chunks.push_str(&count_words(&chunk));
+        chunks.push('\n');
     }
-
     chunks
 }
 
-fn count_words(chunk: String) -> String {
+fn count_words(chunk: &str) -> String {
+    println!("Starting count_words function...");
     let mut word_count = HashMap::new();
     for word in chunk.split_whitespace() {
         *word_count.entry(word.to_string()).or_insert(0) += 1;
     }
-    serde_json::to_string(&word_count).unwrap()
+    let serialized_word_count = serde_json::to_string(&word_count).unwrap();
+    serialized_word_count
 }
 
-fn merge_results(results: Vec<String>) -> String {
+fn merge_results(results: String) -> String {
+    println!("Starting merge_results function...");
     let mut merged_result = HashMap::new();
-    for result in results {
-        let word_count: HashMap<String, usize> = serde_json::from_str(&result).unwrap();
+    let chunks: Vec<&str> = results.trim().split('\n').collect(); // 去除首尾空白字符，然后分割
+    for chunk in chunks {
+        let word_count: HashMap<String, i32> = serde_json::from_str(chunk).unwrap();
         for (word, count) in word_count {
             *merged_result.entry(word).or_insert(0) += count;
         }
     }
-    serde_json::to_string(&merged_result).unwrap()
+    let serialized_merged_result = serde_json::to_string(&merged_result).unwrap();
+    serialized_merged_result
 }
