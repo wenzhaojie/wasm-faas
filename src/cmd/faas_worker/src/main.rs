@@ -24,10 +24,13 @@ pub fn test_serde() -> Result<()> {
     let conn_redis_t = conn_redis_t.elapsed();
     // 测试 字符串
     let input_str = "wenzhaojie".to_string();
+    // 序列化字符串 input_str 为输入对象 input_obj_serde_str
+    let input_obj_serde_str = serde_json::to_string(&input_str).unwrap();
+
     // 存入redis，key为phd
     let input_obj_key = "phd".to_string();
     let output_obj_key = "phd_graduate".to_string();
-    let _ : () = con.set(&input_obj_key, &input_str).unwrap();
+    let _ : () = con.set(&input_obj_key, &input_obj_serde_str).unwrap();
 
     // 调用 handler 函数
     let stat = handler(input_obj_key, output_obj_key);
