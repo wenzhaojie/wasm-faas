@@ -1,5 +1,6 @@
 // 这是一个handler，用于使用wasm环境沙箱来运行FaaS函数
 use serde_json;
+use anyhow::Result;
 use redis::Commands;
 use std::time::Instant;
 use std::collections::HashMap;
@@ -26,17 +27,18 @@ pub fn test_serde() -> Result<()> {
     // 存入redis，key为phd
     let input_obj_key = "phd".to_string();
     let output_obj_key = "phd_graduate".to_string();
-    con.set(input_obj_key, &input_str).unwrap();
+    let _ : () = con.set(&input_obj_key, &input_str).unwrap();
 
     // 调用 handler 函数
-    let stat = handler(input_obj_key.clone(), output_obj_key);
+    let stat = handler(input_obj_key, output_obj_key);
 
     // 打印输出结果
-    println!("Output JSON string: {}", stat);
+    println!("Output JSON string: {}", stat?);
+    Ok(())
 }
 
 
-pub fn handler(input_obj_key: String, output_obj_key: String) -> Result<()> {
+pub fn handler(input_obj_key: String, output_obj_key: String) -> Result<String> {
     // input_obj_key 是redis的key
     // 从redis中获取输入字符串 input_obj_serde_str
     // 计时
@@ -61,7 +63,7 @@ pub fn handler(input_obj_key: String, output_obj_key: String) -> Result<()> {
     let output_obj_serde_str = serde_json::to_string(&output_obj).unwrap();
     let set_output_t = start_set_output_t.elapsed();
     // 需要将输出字符串 output_obj_serde_str 存入redis，key为output_obj_key
-    con.set(output_obj_key, &output_obj_serde_str).unwrap();
+    let _ : () = con.set(&output_obj_key, &output_obj_serde_str).unwrap();
 
     // 返回一些统计信息，一个hashmap
     let mut stats_dict = HashMap::new();
@@ -70,7 +72,7 @@ pub fn handler(input_obj_key: String, output_obj_key: String) -> Result<()> {
     stats_dict.insert("compute_t", compute_t.as_millis());
     stats_dict.insert("set_output_t", set_output_t.as_millis());
     // 返回统计信息, 以json字符串的形式
-    serde_json::to_string(&stats_dict).unwrap()
+    Ok(serde_json::to_string(&stats_dict)?)
 }
 
 
@@ -82,9 +84,6 @@ fn invoke_function(input_str: String) -> String {
 }
 
 
-fn main () {
-    test_serde();
+fn main() {
+    test_serde().unwrap();
 }
-
-
-
