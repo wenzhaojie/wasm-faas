@@ -18,10 +18,10 @@ fn get_url() -> String {
 pub fn test_serde() -> Result<()> {
     // 连接 to Redis
     // 计时
-    let conn_redis_t = Instant::now();
+
     let client = redis::Client::open(&*get_url())?;
     let mut con = client.get_connection()?;
-    let conn_redis_t = conn_redis_t.elapsed();
+
     // 测试 字符串
     let input_str = "wenzhaojie".to_string();
     // 序列化字符串 input_str 为输入对象 input_obj_serde_str
@@ -36,18 +36,18 @@ pub fn test_serde() -> Result<()> {
     let stat = handler(input_obj_key, output_obj_key);
 
     // 打印输出结果
-    println!("Output JSON string: {}", stat?);
+    println!("Output JSON string: {}", stat);
     Ok(())
 }
 
 
-pub fn handler(input_obj_key: String, output_obj_key: String) -> Result<String> {
+pub fn handler(input_obj_key: String, output_obj_key: String) -> String {
     // input_obj_key 是redis的key
     // 从redis中获取输入字符串 input_obj_serde_str
     // 计时
     let conn_redis_t = Instant::now();
-    let client = redis::Client::open(&*get_url())?;
-    let mut con = client.get_connection()?;
+    let client = redis::Client::open(&*get_url()).unwrap();
+    let mut con = client.get_connection().unwrap();
     let conn_redis_t = conn_redis_t.elapsed();
     // 计时
     let start_get_input_t = Instant::now();
@@ -75,7 +75,7 @@ pub fn handler(input_obj_key: String, output_obj_key: String) -> Result<String> 
     stats_dict.insert("compute_t", compute_t.as_millis());
     stats_dict.insert("set_output_t", set_output_t.as_millis());
     // 返回统计信息, 以json字符串的形式
-    Ok(serde_json::to_string(&stats_dict)?)
+    serde_json::to_string(&stats_dict).unwrap()
 }
 
 
