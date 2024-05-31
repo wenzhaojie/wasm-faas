@@ -4,6 +4,8 @@ use redis::Commands;
 use std::time::Instant;
 use std::collections::HashMap;
 use wasmedge_bindgen_macro::*;
+#[allow(unused_imports)]
+use wasmedge_bindgen::*;
 
 use image::{DynamicImage, GenericImageView, ImageBuffer, Rgba, open};
 use serde::{Serialize, Deserialize};

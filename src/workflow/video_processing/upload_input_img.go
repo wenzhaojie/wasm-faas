@@ -42,13 +42,27 @@ func main() {
 
 	// 加载 Wasm 文件并执行
 	input_img_path := "input.jpg"
-	//_input_obj_key := "input_img"
+	input_obj_key := "input_img"
 	// 调用 wasm 模块中的 bandwidth 函数
 
-	wasm_success, _, err := bg.Execute("helloworld", input_img_path)
-	// 打印wasm内部的耗时
-	if len(wasm_success) > 0 {
-		fmt.Println("状态:", wasm_success[0])
+	wasmSuccess, _, err := bg.Execute("helloworld", input_img_path)
+	// 打印wasm内部状态
+	if len(wasmSuccess) > 0 {
+		fmt.Println("状态:", wasmSuccess[0])
+	} else {
+		fmt.Println("未找到 wasm 内部状态")
+	}
+
+	if err != nil {
+		fmt.Println("运行 bindgen -- 失败")
+		return
+	}
+
+	// put_input_img_into_redis
+	wasmSuccess, _, err = bg.Execute("put_input_img_into_redis", input_img_path, input_obj_key)
+	// 打印wasm内部状态
+	if len(wasmSuccess) > 0 {
+		fmt.Println("状态:", wasmSuccess[0])
 	} else {
 		fmt.Println("未找到 wasm 内部状态")
 	}
