@@ -15,3 +15,9 @@ pub fn bandwidth(data: String) -> String {
     let elapsed_seconds = elapsed_time.as_secs(); // 转换为秒数
     elapsed_seconds.to_string() // 返回时间（秒）
 }
+
+
+#[wasmedge_bindgen]
+pub fn helloworld(input_str: String) -> String {
+    return format!("Hello, {}!", input_str);
+}

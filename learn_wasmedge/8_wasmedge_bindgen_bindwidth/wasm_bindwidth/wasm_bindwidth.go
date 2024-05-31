@@ -13,6 +13,7 @@ import (
 func main() {
 	// 期望的 Args[0]: 程序名称 (./bindgen_funcs)
 	// 期望的 Args[1]: wasm 文件 (rust_bindgen_funcs_lib.wasm))
+	fmt.Println("Go: Args:", os.Args) // 输出命令行参数
 
 	// 设置不打印调试信息
 	wasmedge.SetLogErrorLevel()
@@ -54,6 +55,15 @@ func main() {
 
 	// 获取开始时间
 	startTime := time.Now()
+
+	// 调用 wasm 模块中的 helloworld 函数
+	wasm_success, _, err := bg.Execute("helloworld", "inputData")
+	// 打印wasm内部的耗时
+	if len(wasm_success) > 0 {
+		fmt.Println("状态:", wasm_success[0])
+	} else {
+		fmt.Println("未找到 wasm 内部状态")
+	}
 
 	// 调用 wasm 模块中的 bandwidth 函数
 	wasm_duration, _, err := bg.Execute("bandwidth", inputData)

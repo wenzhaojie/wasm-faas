@@ -13,6 +13,7 @@ import (
 func main() {
 	// 期望的 Args[0]: 程序名称 (./bindgen_funcs)
 	// 期望的 Args[1]: wasm 文件 (rust_bindgen_funcs_lib.wasm))
+	fmt.Println("Go: Args:", os.Args) // 输出命令行参数
 
 	// 设置不打印调试信息
 	wasmedge.SetLogErrorLevel()
