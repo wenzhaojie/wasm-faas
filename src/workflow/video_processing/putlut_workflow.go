@@ -33,8 +33,14 @@ func main() {
 	)
 
 	// 加载并验证 wasm
-	vm.LoadWasmFile(os.Args[1])
-	vm.Validate()
+	err := vm.LoadWasmFile(os.Args[1])
+	if err != nil {
+		return
+	}
+	err = vm.Validate()
+	if err != nil {
+		return
+	}
 
 	// 实例化 bindgen 和虚拟机
 	bg := bindgen.New(vm)
