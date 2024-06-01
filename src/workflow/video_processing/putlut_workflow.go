@@ -40,12 +40,9 @@ func main() {
 	bg := bindgen.New(vm)
 	bg.Instantiate()
 
-	// 加载 Wasm 文件并执行
-	input_img_path := "input.jpg"
-	input_obj_key := "input_img"
-	// 调用 wasm 模块中的 bandwidth 函数
-
-	wasmSuccess, _, err := bg.Execute("helloworld", input_img_path)
+	// 调用 wasm 模块中的 helloworld 函数
+	helloworld_str := "Hello, World!"
+	wasmSuccess, _, err := bg.Execute("helloworld", helloworld_str)
 	// 打印wasm内部状态
 	if len(wasmSuccess) > 0 {
 		fmt.Println("状态:", wasmSuccess[0])
@@ -57,6 +54,10 @@ func main() {
 		fmt.Println("运行 bindgen -- 失败")
 		return
 	}
+
+	// 调用 Wasm 模块中的 put_input_img_into_redis
+	input_img_path := "input.jpg"
+	input_obj_key := "input_img"
 
 	// put_input_img_into_redis
 	wasmSuccess, _, err = bg.Execute("put_input_img_into_redis", input_img_path, input_obj_key)
@@ -72,9 +73,23 @@ func main() {
 		return
 	}
 
+	// 调用 handler
+	output_obj_key := "input_img_putlut"
+	wasmSuccess, _, err = bg.Execute("handler", input_obj_key, output_obj_key)
+	// 打印wasm内部状态
+	if len(wasmSuccess) > 0 {
+		fmt.Println("状态:", wasmSuccess[0])
+	} else {
+		fmt.Println("未找到 wasm 内部状态")
+	}
+
+	if err != nil {
+		fmt.Println("运行 bindgen -- 失败")
+		return
+	}
+
 	// get_output_img_from_redis
-	output_img_path := "input_1.jpg"
-	output_obj_key := "input_img"
+	output_img_path := "putlut_output.jpg"
 
 	wasmSuccess, _, err = bg.Execute("get_output_img_from_redis", output_img_path, output_obj_key)
 	// 打印wasm内部状态

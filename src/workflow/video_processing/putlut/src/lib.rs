@@ -58,9 +58,33 @@ pub fn put_input_img_into_redis(input_img_path: String, input_obj_key: String) -
     let serializable_image_str = serde_json::to_string(&serializable_image).unwrap();
     let client = redis::Client::open(&*get_url()).unwrap();
     let mut con = client.get_connection().unwrap();
-    let _ : () = con.set(input_obj_key, &serializable_image_str).unwrap();
+    let _ : () = con.set(input_obj_key.clone(), &serializable_image_str).unwrap();
     // 返回一个字符串，表示成功
-    "Success".to_string()
+    format!("Image saved successfully in Redis with key {}", input_obj_key)
+}
+
+
+
+#[wasmedge_bindgen]
+pub fn get_output_img_from_redis(output_img_path: String, output_obj_key: String) -> String {
+    // Connect to Redis
+    let client = redis::Client::open(get_url()).unwrap();
+    let mut con = client.get_connection().unwrap();
+
+    // Get the serialized image string from Redis using the provided key
+    let output_obj_serde_str: String = con.get(&output_obj_key).unwrap();
+
+    // Deserialize the string back into a SerializableImage object
+    let output_obj: SerializableImage = serde_json::from_str(&output_obj_serde_str).unwrap();
+
+    // Convert the SerializableImage back into a DynamicImage
+    let dynamic_image = deserialize_image(&output_obj);
+
+    // Save the DynamicImage to the specified path
+    dynamic_image.save(output_img_path.clone()).unwrap();
+
+    // Return a success message with the file path
+    format!("Image saved successfully at {}", output_img_path)
 }
 
 
