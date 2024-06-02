@@ -82,6 +82,11 @@ func executeWasmFunctionParallel(args []string, functionName string, p1 string, 
 func main() {
 	fmt.Println("Go: Args:", os.Args)
 
+	// 将输入图片放入 Redis
+	input_img_path := "input.jpg"
+	input_obj_key := "input_img"
+	executeWasmFunctionParallel(os.Args, "put_input_img_into_redis", input_img_path, input_obj_key, 1, 1)
+
 	// 设置并行任务数量和最大并发工作者数
 	executeWasmFunctionParallel(os.Args, "handler", "input_img", "input_img_putlut", 10, 5)
 
