@@ -9,11 +9,13 @@ fn main() {
                 ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit \
                 in voluptate velit esse cillum dolore eu fugiat nulla pariatur. \
                 Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia \
-                deserunt mollit anim id est laborum.";
+                deserunt mollit anim id est laborum.".to_string();
 
     let num_threads = 4;
     let chunks = split_text_into_chunks(text, num_threads);
     println!("Text split into chunks: {:?}", chunks);
+
+    // count_words
 
     let merge_results = merge_results(chunks);
     println!("Results merged: {}", merge_results);
@@ -25,7 +27,7 @@ fn main() {
     println!("Exiting main function...");
 }
 
-fn split_text_into_chunks(text: &str, num_chunks: usize) -> String {
+fn split_text_into_chunks(text: String, num_chunks: usize) -> String {
     let mut chunks = String::new();
     let words: Vec<&str> = text.split_whitespace().collect();
     let chunk_size = words.len() / num_chunks;
@@ -45,6 +47,7 @@ fn split_text_into_chunks(text: &str, num_chunks: usize) -> String {
     chunks
 }
 
+
 fn count_words(chunk: &str) -> String {
     println!("Starting count_words function...");
     let mut word_count = HashMap::new();
@@ -54,6 +57,7 @@ fn count_words(chunk: &str) -> String {
     let serialized_word_count = serde_json::to_string(&word_count).unwrap();
     serialized_word_count
 }
+
 
 fn merge_results(results: String) -> String {
     println!("Starting merge_results function...");

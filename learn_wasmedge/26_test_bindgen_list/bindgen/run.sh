@@ -1,0 +1,1 @@
+./test_bindgen_list rust_bindgen/target/wasm32-wasi/release/rust_bindgen.wasm
