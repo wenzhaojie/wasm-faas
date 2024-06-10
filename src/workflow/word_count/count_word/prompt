@@ -1,0 +1,2 @@
+用rust写一个word_count函数，这个函数接收一个String类型的参数input，返回一个HashMap<String, u32>，其中key是input中的单词，value是该单词在input中出现的次数。这个函数需要忽略单词之间的空格、标点符号和大小写。
+并写一个测试函数，测试这个函数的正确性。

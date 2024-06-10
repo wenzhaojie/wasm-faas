@@ -1,0 +1,1 @@
+./run_workflow ./word_count/target/wasm32-wasi/release/count_word.wasm

@@ -1,4 +1,0 @@
-请帮用rust帮我，写几个函数来完成word_count函数工作流。
-要求每一个函数的参数只能是String类型。
-第一个函数 fn load_text_from_txt(txt_file_path: String) -> String;
-第二个函数是split_text(text: String) -> Vec<String>;
