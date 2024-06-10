@@ -1,0 +1,4 @@
+github.com/second-state/WasmEdge-go v0.13.4 h1:NHfJC+aayUW93ydAzlcX7Jx1WDRpI24KvY5SAbeTyvY=
+github.com/second-state/WasmEdge-go v0.13.4/go.mod h1:HyBf9hVj1sRAjklsjc1Yvs9b5RcmthPG9z99dY78TKg=
+github.com/second-state/wasmedge-bindgen v0.4.1 h1:N1OPuonO4P0rfHym2iOT4l/kCopSSDmjyuxHkSr4WsU=
+github.com/second-state/wasmedge-bindgen v0.4.1/go.mod h1:2dJ3iNlgMK+EBanG7PbEMCPGBMO/i85VdfLfPXllF9g=
