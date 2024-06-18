@@ -1,1 +1,1 @@
-./upload_input_img ./putlut/target/wasm32-wasi/release/putlut.wasm
+./run_workflow ./putlut/target/wasm32-wasi/release/putlut.wasm
